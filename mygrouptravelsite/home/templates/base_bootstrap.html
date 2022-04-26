@@ -26,11 +26,11 @@
                     Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Login</a>
-                        <a class="dropdown-item" href="#">Create account</a>
+                        <a class="dropdown-item" href="{% url 'login' %}?next={% url 'home:home_page' %}">Login</a>
+                        <a class="dropdown-item" href="/register/?next={% url 'home:home_page' %}">Create account</a>
                         {% if user.is_authenticated %}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout </a>
+                        <a class="dropdown-item" href="{% url 'logout' %}?next={% url 'home:home_page' %}">Logout </a>
                         {% endif %}
                     </div>
                 </li>

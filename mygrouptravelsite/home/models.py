@@ -17,6 +17,7 @@ class Trip(models.Model):
     def __str__(self):
         return self.name
 
+
 class Event(models.Model):
     name = models.CharField(max_length=200, 
                             validators=[MinLengthValidator(3, "Event title must be longer than 3 characters")]
