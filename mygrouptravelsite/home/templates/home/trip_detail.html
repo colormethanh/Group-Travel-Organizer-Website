@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <body>
+        <h1> {{ trip }} detail view </h1>
+        <ul>
+            <li> Trip ID: {{ trip.id }}  </li>
+            <li> Start date: {{ trip.start_date }} </li>
+            <li> End date: {{ trip.end_date }} </li>
+        </ul>
+        <a href="{% url 'home:home_page' %}" class="btn btn-secondary">Back to home page</a>
+        <br>
+        {% if trip.owner == user %}
+        <a href="{% url 'home:trip_delete' trip.id %}"> Delete this ad </a>
+        {% endif %}
+    </body>
+</html>

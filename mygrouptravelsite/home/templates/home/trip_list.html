@@ -7,12 +7,14 @@
         {% if trip_list %}
         <ul>
             {% for trip in trip_list %}
-            <li>{{ trip }}</li>
+            <li> <a href="{% url 'home:trip_detail' trip.id %}" class="btn btn-secondary"> {{ trip }}</a> </li>
             {% endfor %}
         </ul>
         {% else %}
             <p>There are no current trips</p>
         {% endif %}
         <a href="{% url 'home:trip_create' %}" class="btn btn-secondary">Create Trip</a>
+        <br>
+        <a href="{% url 'home:home_page' %}">Back to home page</a>
         </body>
 </html>
