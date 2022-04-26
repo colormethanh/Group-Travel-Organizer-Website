@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{% extends "base_bootstrap.html" %}
 
-    </head>
-    <body>
-        <form method="post">
-            {% csrf_token %}
-            <p>Are you sure you want to delete "{{ object }}"?</p>
-            {{ form }}
-            <input type="submit" value="Confirm">
-        </form>
-    </body>
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    {{ form }}
+    <input type="submit" value="Confirm">
+</form>
+{% endblock %}
 
-</html>

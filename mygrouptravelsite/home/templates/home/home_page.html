@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{% extends "base_bootstrap.html" %}
 
-    </head>
-    <body>
-        <p>Welcome to my homepage</p>
-        <ul>
-            <li> <a href="{% url 'home:trip_create' %}">Create a trip</a>  </li>
-            <li> <a href="{% url 'home:trip_list' %}">View all trips</a>  </li>
-        </ul>
-    </body>
-</html>
+{% block content %}
+
+<div style="text-align:center">
+    <h1>Welcome to my TravelBuddy</h1>
+    <a href="{% url 'home:trip_create' %}" class="btn btn-primary" >Create a trip</a>
+    <p></p>
+    <a href="{% url 'home:trip_list' %}" class="btn btn-primary">View all trips</a>
+</div>
+{% endblock %}
