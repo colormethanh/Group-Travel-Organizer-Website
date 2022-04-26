@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Trips</h1>
+        <p>Here is a collection of current trips</p>
+        <br>
+        {% if trip_list %}
+        <ul>
+            {% for trip in trip_list %}
+            <li>{{ trip }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>There are no current trips</p>
+        {% endif %}
+        <a href="{% url 'home:trip_create' %}" class="btn btn-secondary">Create Trip</a>
+        </body>
+</html>
