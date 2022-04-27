@@ -14,15 +14,20 @@
 
 <h3> Your scheduled events </h3>
 
+{% if events %}
 <ul>
     {% for event in events %}
-    <li>{{event}} <br> Location:{{ event.location }}</li> 
+    <li>{{event}} <br> Location: {{ event.location }}</li> 
     {% endfor %}
 </ul>
-
+{% else %}
+<p> --Currently no events confirmed for your trip-- </p>
+{% endif %}
+ 
 {% if trip.owner == user %}
 <p></p>
 <p></p>
-<a href="{% url 'home:trip_delete' trip.id %}"> Delete this ad </a>
+<a href="{% url 'home:trip_delete' trip.id %}"> Delete this Trip </a><br>
+<a href="{% url 'home:trip_update' trip.id %}"> Edit this Trip </a>
 {% endif %}
 {% endblock %}
