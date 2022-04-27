@@ -5,7 +5,10 @@ from . import views
 app_name = 'home'
 
 urlpatterns = [
-    path('', views.HomePage, name='home_page' ),
-    path('trips/', views.TripListView.as_view(), name='trip_list' ),
-    path('trip_create/', views.TripCreateView.as_view() , name='trip_create')
+    path('', views.HomePage, name='home_page'),
+    path('trips/', views.TripListView.as_view(), name='trip_list'),
+    path('trip_create/', views.TripCreateView.as_view(), name='trip_create'),
+    path('trips/<int:pk>', views.TripDetailView.as_view() , name='trip_detail'),
+    path('trips/<int:pk>/delete', views.TripDeleteView.as_view(), name='trip_delete'),
+    path('trips/<int:pk>/event_create', views.EventCreateView.as_view(), name='event_create'),
 ]
