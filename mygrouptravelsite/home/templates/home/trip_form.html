@@ -1,10 +1,11 @@
 {% extends "base_bootstrap.html" %}
 
 {% block content %}
-<form action='{% url "home:trip_create" %}' method="post">
+<h3> Trip Creation </h3>
+<form action="{% url 'home:trip_create' %}" method="post">
 {% csrf_token %}
 {{ form.as_p }}
-<input type="submit" value="Submit">
+<input type="submit" class="btn btn-primary" value="Submit">
 <a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}
