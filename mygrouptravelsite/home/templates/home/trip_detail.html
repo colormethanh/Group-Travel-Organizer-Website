@@ -14,7 +14,7 @@
 
 <h3> Your scheduled events </h3>
 
-<!--- Working loop to display events  --> 
+<!--- Working loop to display events  
 {% if events %}
 <ul>
     {% for event in events %}
@@ -24,9 +24,10 @@
 {% else %}
 <p> --Currently no events confirmed for your trip-- </p>
 {% endif %}
+--> 
 
 
-<!---accordian example from bootstrap site link: https://getbootstrap.com/docs/5.0/components/accordion/ 
+<!---accordian example from bootstrap site link: https://getbootstrap.com/docs/5.0/components/accordion/ -->
 <div class="accordion" id="accordionExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
@@ -41,7 +42,7 @@
         </div>
       </div>
 </div>
--->
+
 
 
 <!--- Tried to implement it into my own project
