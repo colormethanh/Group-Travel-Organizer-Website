@@ -59,7 +59,7 @@ class TripDetailView(OwnerDetailView):
     def get(self, request, pk):
         t = Trip.objects.get(id=pk)
         events = Event.objects.filter(trip = t)
-        ctx = {'trip': t, 'events':events}
+        ctx = {'trip': t, 'events':events, 'ct': 0}
         return render(request, self.template_name, ctx)
 
 class TripDeleteView(OwnerDeleteView):
