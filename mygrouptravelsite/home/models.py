@@ -14,17 +14,29 @@ def date_validator(value):
         return value
 
 
-# Create your models here.
 class Trip(models.Model):
     name = models.CharField(max_length=200, 
                             validators=[MinLengthValidator(3, "Trip title must be longer than 3 characters")]
                             )
+    key = models.CharField(max_length=10,
+                            validators=[MinLengthValidator(3, "Trip key must be longer than 3 characters")],
+                            null=True
+                            )
     start_date = models.DateField(validators=[date_validator])
     end_date = models.DateField(validators=[date_validator])
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Going', related_name='members_going')
 
     def __str__(self):
         return self.name
+    
+    def ismember(self, user_id):
+        member_lst = [member.id for member in self.members.all()]
+        if user_id in member_lst:
+            return True
+        else:
+            return False
+
     
 
 class Event(models.Model):
@@ -37,11 +49,14 @@ class Event(models.Model):
     end_date = models.DateField(validators=[date_validator], null=True)
     confirmed = models.BooleanField(default=False)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, null=True) 
+    
 
     def __str__(self):
         return self.name
 
-                                
+class Going(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-
-    
+    def __str__(self):
+        return '%s is a member of %s'%(self.user.username, self.trip.name)

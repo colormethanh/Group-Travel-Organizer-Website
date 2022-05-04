@@ -4,6 +4,11 @@
 <h3> {{ title }} </h3>
 <form action="" method="post">
 {% csrf_token %}
+
+{% if error_message %}
+<p class= "text-danger">*{{ error_message }}</p>
+{% endif %}
+
 {{ form.as_p }}
 <input type="submit" class="btn btn-primary" value="Submit">
 <a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Cancel</a>

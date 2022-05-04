@@ -1,75 +1,67 @@
 {% extends "base_bootstrap.html" %}
 
 {% block content %}
-<h1> {{ trip }} detail view </h1>
-<ul>
-    <li> Trip ID: {{ trip.id }}  </li>
-    <li> Start date: {{ trip.start_date }} </li>
-    <li> End date: {{ trip.end_date }} </li>
-</ul>
-<a href="{% url 'home:event_create' trip.id %}" class="btn btn-primary">Add an event</a> | 
-<a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Back to list</a>
+<div class="container">
 
-<p></p>
+    {% if not ismember %}
+    <h1> {{ trip }} detail view  | <a class="btn btn-primary" href="{% url 'home:trip_join' trip.id %}"> Join this Trip </a></h1><br>
+    {% else %}
+    <h1> {{ trip }} detail view </h1>
+    {% endif %}
+    <ul>
+        <li> Trip ID: {{ trip.id }}  </li>
+        <li> Trip Key: {{ trip.key }}</li>
+        <li> Start date: {{ trip.start_date }} </li>
+        <li> End date: {{ trip.end_date }} </li>
+    </ul>
+    <a href="{% url 'home:event_create' trip.id %}" class="btn btn-primary">Add an event</a> | 
+    <a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Back to list</a>
 
-<h3> Your scheduled events </h3>
+    <p></p>
 
-<!--- Working loop to display events  
-{% if events %}
-<ul>
-    {% for event in events %}
-    <li>{{event}} <br> Location: {{ event.location }}</li> 
-    {% endfor %}
-</ul>
-{% else %}
-<p> --Currently no events confirmed for your trip-- </p>
-{% endif %}
---> 
-
-
-<!---accordian example from bootstrap site link: https://getbootstrap.com/docs/5.0/components/accordion/ -->
-<div class="accordion" id="accordionExample">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Accordion Item #1
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-          </div>
-        </div>
-      </div>
-</div>
-
-
-
-<!--- Tried to implement it into my own project
-{% if events %}
-<div class="accordion" id="EventAccordian">
-    {% for event in events %}
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                {{ event }}
-            </button>   
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
-            <div class="accordion-body">
-              {{ event }} <br>
-              location: {{ event.location }}
+    {% if events %}
+    <h3> Planned events... </h3>
+    <div class="accordion" id="EventAccordian">
+        {% for position, event in events.items %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ position }}" aria-expanded="false" aria-controls="{{ position }}">
+                    {{ event }} | {{ event.start_date }} to {{ event.end_date }}
+                </button>   
+            </h2>
+            <div id={{position}} class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
+                <div class="accordion-body">
+                {{ event }} <br>
+                location: {{ event.location }}
+                </div>
             </div>
-        </div
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    {% else %}
+    <h3> Planned events... </h3>
+    <p> You have no events planned for this trip. </p>
+    {% endif %} 
+    <p></p>
+    <h3> Current Trip Members </h3>
+    {% if members %}
+        {% for member in members %}
+            <ul>
+                <li><p> {{member.user}} </p></li>
+            </ul>
+        {% endfor %}
+    {% else %}
+    <p> There are currently no members in your trip </p>
+    {% endif %}
 </div>
-{% endif %} -->
 
 {% if trip.owner == user %}
 <p></p>
 <p></p>
 <a href="{% url 'home:trip_delete' trip.id %}"> Delete this Trip </a><br>
-<a href="{% url 'home:trip_update' trip.id %}"> Edit this Trip </a>
+<a href="{% url 'home:trip_update' trip.id %}"> Edit this Trip </a><br>
+{% if not ismember %}
+<a href="{% url 'home:trip_join' trip.id %}"> Join this Trip </a><br>
+{% endif %}
 {% endif %}
 {% endblock %}
