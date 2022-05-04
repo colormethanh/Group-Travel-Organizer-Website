@@ -6,7 +6,7 @@ class TripForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = '__all__'
-        exclude = ['owner'] 
+        exclude = ['owner', 'members'] 
         widgets = {
             'start_date': forms.DateInput(
                             format=('%Y-%m-%d'),
@@ -20,14 +20,12 @@ class TripForm(forms.ModelForm):
                             'placeholder': 'Select a date',
                             'type': 'date'
               }),
-
         }
 
 class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        #fields= ['name', 'location', 'cost', 'start_date', 'end_date']
         fields = '__all__'
         exclude= ['confirmed', 'trip']
     
@@ -45,3 +43,8 @@ class EventForm(forms.ModelForm):
                             'type': 'date'
               }),
         }
+
+class TripJoinForm(forms.Form):
+    trip_key = forms.CharField(max_length=10,
+                                help_text='Enter Trip Key to join'
+                                ) 
