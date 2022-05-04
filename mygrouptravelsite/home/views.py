@@ -28,6 +28,20 @@ class TripListView(OwnerListView):
     model = Trip
     template_name = "home/trip_list.html"
 
+class UserTripListView( LoginRequiredMixin ,View):
+    model = Trip
+    template_name = "home/trip_list.html"
+
+    def get(self, request):
+        user = self.request.user
+        trip_list = [ t.trip for t in Going.objects.filter(user=user)]
+        ctx = {'trip_list':trip_list }
+        return render(request, self.template_name, ctx)
+
+
+
+
+
 
 class TripCreateView(LoginRequiredMixin, View):
     template_name = 'home/trip_form.html'

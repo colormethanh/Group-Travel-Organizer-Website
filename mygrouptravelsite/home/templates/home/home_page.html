@@ -8,6 +8,6 @@
     <p></p>
     <a href="{% url 'home:trip_list' %}" class="btn btn-primary">View all trips</a>
     <p></p>
-    <a href="#" class="btn btn-primary">View my trips</a>
+    <a href="{% url 'home:user_trip_list' %}" class="btn btn-primary">View my trips</a>
 </div>
 {% endblock %}
