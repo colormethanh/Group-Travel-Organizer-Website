@@ -1,0 +1,30 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+<h3> {{ title }} </h3>
+<form action="" method="post">
+{% csrf_token %}
+
+{% if error_message %}
+<p class= "text-danger">*{{ error_message }}</p>
+{% endif %}
+
+{{ form.as_p }}
+<input type="submit" class="btn btn-primary" value="Submit">
+<a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% if events %}
+<p></p>
+<p></p>
+<h3> Your events </h3>
+<ul>
+    {% for event in events %}
+    <li> 
+        {{event}} | <a href="{% url 'home:event_update' trip.id event.id %}"> Edit </a> 
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
