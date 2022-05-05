@@ -1,13 +1,77 @@
 {% extends "base_bootstrap.html" %}
 
-{% block content %}
+{% block head %}
 
-<div style="text-align:center">
-    <h1>Welcome to my TravelBuddy</h1>
-    <a href="{% url 'home:trip_create' %}" class="btn btn-primary" >Create a trip</a>
-    <p></p>
-    <a href="{% url 'home:trip_list' %}" class="btn btn-primary">View all trips</a>
-    <p></p>
-    <a href="{% url 'home:user_trip_list' %}" class="btn btn-primary">View my trips</a>
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+<div class="row align-items-center">
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+<main role="main" class="inner cover">
+    <h1 class="cover-heading">Welcome to TravelBuddy</h1>
+    <p class="lead"> 
+        Travel Buddy is a one stop site for planning, organizing, and sharing trips with your friends, families, or whoever!
+        <p class="lead">
+            <a href="{% url 'home:trip_create' %}" class="btn btn-lg btn-primary">Click here to create a trip!</a>
+          </p>
+    </p>
+</main>
 </div>
+</div>
+</div>
+
+<div class="container d-flex h-30 p-3 mx-auto flex-column">
+<div class="row align-items-center justify-content-center">
+<h3 class="text-center"> How to use Travel buddy </h3>
+    <div class="accordion" id="EventAccordian" style="max-width: 40rem;">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#how_to_accordion" aria-expanded="false" aria-controls="how_to_accordion">
+                    Click for instructions
+                </button>   
+            </h2>
+            <div id=how_to_accordion class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
+                <div class="accordion-body">
+                    <ol>
+                    <li>Create a trip</li>
+                    <li>Invite your group members to the trip by sharing the trip url</li>  
+                    <li>Create events, vote on events, and send updates via the chat function</li>
+                    <li>And when the day finally comes, go and enjoy your trip! (travel buddy will be here for any trip updates that may arise)</li> 
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+</div>
+</div>
+
+{% load static %}
+<div class="container d-flex h-25 p-3 mx-auto flex-column">
+    <div class="row justify-content-center">
+    <div class="col-lg-4">
+        <img class="rounded-circle" alt="100x100" src="{% static 'icons/forest.png' %}" data-holder-rendered="true">
+        <h3>Example Hiking Trip</h3>
+        <p>Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
+        <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+    </div>
+
+    <div class="col-lg-4">
+        <img class="rounded-circle" alt="100x100" src="{% static 'icons/mountain.png' %}" data-holder-rendered="true">
+
+        <h3>Example Moutain Trip</h3>
+        <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
+        <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+    </div>
+
+    <div class="col-lg-4">
+        <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
+
+        <h3>Example Beach Trip</h3>
+        <p>And lastly this, the third column of representative placeholder content.</p>
+        <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+    </div>
+    </div>
+</div>
+
 {% endblock %}
