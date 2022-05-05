@@ -1,0 +1,26 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ event.name }}</h1> 
+    <p></p>
+    <ul>
+    <li> Event Location: {{ event.location }} </li>
+    <li> Event Cost: {{ event.cost }} </li>
+    <li> Start date: {{ event.start_date }} </li>
+    <li> End date: {{ event.end_date }} </li>
+
+    <li> Votes: {{ event.votes }} </li>
+    </ul>
+</div>
+
+{% if not voted %}
+<form action="{% url 'home:vote' event.trip.id event.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value = "Vote"/>
+</form>
+{% else %}
+<p> Thank you for voting! </p>
+{% endif %}
+
+{% endblock %}

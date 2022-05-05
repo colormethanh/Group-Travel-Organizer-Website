@@ -48,11 +48,20 @@ class Event(models.Model):
     start_date = models.DateField(validators=[date_validator], null=True)
     end_date = models.DateField(validators=[date_validator], null=True)
     confirmed = models.BooleanField(default=False)
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, null=True) 
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, null=True)
+    voters = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Voted', related_name='event_vote' )
+    votes = models.IntegerField(default=0) 
     
 
     def __str__(self):
         return self.name
+    
+    def has_voted(self, user_id):
+        voters_lst = [voter.id for voter in self.voters.all()]
+        if user_id in voters_lst:
+            return True
+        else:
+            return False
 
 class Going(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
@@ -60,3 +69,23 @@ class Going(models.Model):
 
     def __str__(self):
         return '%s is a member of %s'%(self.user.username, self.trip.name)
+
+class Voted(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s voted on %s'%(self.user.username, self.trip.name)
+
+class Comment(models.Model):
+    text = models.CharField(max_length=200,
+                            validators=[MinLengthValidator(3, "Comment must be greater than 3 characters")]
+                            )
+    
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
