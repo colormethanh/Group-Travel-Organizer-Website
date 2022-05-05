@@ -70,11 +70,8 @@ class TripDetailView(OwnerDetailView):
         t = Trip.objects.get(id=pk)
         events = Event.objects.filter(trip=t)
         user = self.request.user
-        comments = Comment.objects.filter(trip=t).order_by('-created_at')[:5]
-
-        print('comment length is..',len(comments))
-
-
+        comments = Comment.objects.filter(trip=t).order_by('-created_at')
+        
         comment_form = CommentForm()
 
         members = Going.objects.filter(trip=t)

@@ -1,112 +1,182 @@
 {% extends "base_bootstrap.html" %}
 
+{% block head %}
+<style>
+    .list-group{
+        max-height: 300px;
+        margin-bottom: 10px;
+        overflow-y:auto;
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
+{% load static %}
 <div class="container">
-
-    {% if not ismember %}
-    <h1> {{ trip }} detail view  | <a class="btn btn-primary" href="{% url 'home:trip_join' trip.id %}"> Join this Trip </a></h1><br>
-    {% else %}
-    <h1> {{ trip }} detail view </h1>
-    {% endif %}
-    <div class="container">
-        <div class="row">
-        <div class="col">
-            <h3> Trip Details </h3>
-            <ul>
-                <li> Trip ID: {{ trip.id }}  </li>
-                <li> Trip Key: {{ trip.key }}</li>
-                <li> Start date: {{ trip.start_date }} </li>
-                <li> End date: {{ trip.end_date }} </li>
-            
-            </ul>
-        </div>
-        <div class="col">
-            <h3> Current Trip Members </h3>
-            {% if members %}
-            {% for member in members %}
-            <ul>
-                <li><p> {{member.user}} </p></li>
-            </ul>
-            {% endfor %}
-            {% else %}
-            <p> There are currently no members in your trip </p>
-            {% endif %}
-        </div>
-        </div>
-    </div>
-    <a href="{% url 'home:event_create' trip.id %}" class="btn btn-primary">Add an event</a> | 
-    <a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Back to list</a>
-
-    <p></p>
-
-    {% if unconf_events or conf_events %}
-    <div class="container">
-        <div class="row">
+    <main>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="{% static 'icons/vacations.png' %}" alt="" width="72" height="57">
+            <h2>Trip Main page</h2>
+            <p class="lead">
+                This is your main trip page. You can interact with this page in many different ways! 
+            </p>
+            <div class="row justify-content-center">
             <div class="col">
-            <h3> Confirmed events... </h3>
-            <div class="accordion" id="EventAccordian">
-            {% for position, event in conf_events.items %}
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ position }}" aria-expanded="false" aria-controls="{{ position }}">
-                        {{ event }} | {{ event.start_date }} to {{ event.end_date }}
-                    </button>   
-                </h2>
-                <div id={{position}} class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
-                    <div class="accordion-body">
-                    {{ event }} <br>
-                    location: {{ event.location }}
+                <a href="#" class="btn btn-primary">Submit a Trip idea</a> | <a href="#" class="btn btn-primary"> Vote on submitted trips </a> | <a href="#" class="btn btn-primary"> View trip member</a>
+            </div>
+            </div>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-primary">Additional Details</span>
+                  <span class="badge bg-primary rounded-pill">3</span>
+                </h4>
+                <!--
+                <ul class="list-group mb-3">
+                  <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                      <h6 class="my-0">Product name</h6>
+                      <small class="text-muted">Brief description</small>
+                    </div>
+                    <span class="text-muted">$12</span>
+                  </li>
+                </ul>
+                -->
+                <div class="accordion" id="EventAccordian">
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details_1" aria-expanded="false" aria-controls="details_1">
+                                Current Members
+                            </button>   
+                        </h2>
+                        <div id=details_1 class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
+                            <div class="accordion-body">
+                                {% if members %}
+                                {% for member in members %}
+                                <ul>
+                                    <li><p> {{member.user}} </p></li>
+                                </ul>
+                                {% endfor %}
+                                {% else %}
+                                <p> There are currently no members in this trip </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details_2" aria-expanded="false" aria-controls="details_2">
+                                Events for voting
+                            </button>   
+                        </h2>
+                        <div id=details_2 class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
+                            <div class="accordion-body">
+                                <div class="container align-items-center">
+                                <div class="text">
+                                    <strong>Top voted events</strong>
+                                </div>
+                                <ol class="list-group">
+                                    {% for position, event in unconf_events.items %}
+                                    <li> 
+                                        {{ event }}
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <p></p>
+                <p></p>
+                
+                <h3> Comments </h3>
+                <div class="row justify-content-center">
+                    <div class="col">
+                    <form action="{% url 'home:comment_create_view' trip.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Comment here" aria-label="comment" aria-describedby="button-addon2" name="comment">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                
+                {% if comments %}
+                
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 350px;">
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                        {% for comment in comments %}
+                        <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                            <div class="d-flex w-100 align-items-center justify-content-between">
+                              <strong class="mb-1">{{ comment.owner }} says..</strong>
+                              <small>{{ comment.created_at }}</small>
+                            </div>
+                            <div class="col-10 mb-1 small">{{ comment.text }}</div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                <p> There are currently no comments... </p>
+                {% endif %}
+                
+
             </div>
-            {% endfor %}
+            
+            <div class="col-md-7 col-lg-8">
+                {% if not ismember %}
+                <h1> {{ trip }}  | <a class="btn btn-primary" href="{% url 'home:trip_join' trip.id %}"> Join this Trip </a></h1><br>
+                {% else %}
+                <h1> {{ trip }} </h1>
+                {% endif %}
+                
+                <div class="row">
+                    <div class="col">
+                    <ul>
+                        <li> Trip ID: {{ trip.id }}  </li>
+                        <li> Trip Key: {{ trip.key }}</li>
+                        <li> Start date: {{ trip.start_date }} </li>
+                        <li> End date: {{ trip.end_date }} </li>
+        
+                    </ul>
+                    </div>
+                </div>
+
+                <h2> Confirmed events... </h2>
+                {% if conf_events %}
+                {% for position, event in conf_events.items %}
+                <div class="row mb-2">
+                    
+                    <div class="col-md-14">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                        <h3 class="mb-0 text-primary">{{event}}</h3>
+                        <div class="mb-1 text-muted">{{event.start_date}} - {{event.end_date}}</div>
+                        <p class="card-text mb-auto">Description for event</p>
+                        <a href="{% url 'home:event_detail' trip.id event.id %}" class="stretched-link">View event</a>
+                        </div>
+                        <div class="col-auto d-none d-lg-block">
+                            <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
+                        </div>
+                    </div>
+                    </div>
+                </div> 
+                {% endfor %}
+                {% else %}
+                <p> There are no events planned events for your trip. </p>
+                {% endif %}
             </div>
         </div>
-        <div class="col">
-            <h3> Unconfirmed Events... </h3>
-            <P> Click on an event below to view and vote. </P>
-            <ul class="list-group">
-            {% for position, event in unconf_events.items %}
-                 <a href="{% url 'home:event_detail'  event.trip.id  event.id %}" class="list-group-item list-group-item-action">{{ event }} | {{ event.start_date }} to {{ event.end_date }}</a>
-            {% endfor %}
-            </ul>
-        </div>
-        </div>
-    </div>
-    </div>
-    {% else %}
-    <h3> Planned events... </h3>
-    <p> You have no events planned for this trip. </p>
-    {% endif %}
-    
-    <p></p>
-    <p></p>
-    
-    <div class="container">
-    <h3> Comments </h3>
-    {% if comments %}
-        {% for comment in comments %}
-        <div class="card border-primary mb-1" style="max-width: 30rem;">
-            <div class="card-body">
-              <p class="card-text"> <span class="text-secondary"><strong>{{ comment.owner }} says... </strong></span> <br> {{ comment.text }} <br> Created at: {{ comment.created_at}}</p>
-            </div>
-        </div>
-        {% endfor %}
-    {% else %}
-        <p> There are currently no comments... </p>
-    {% endif %}
-    <div class="row justify-content-center">
-        <div class="col">
-        <form action="{% url 'home:comment_create_view' trip.id %}" method="post">
-            {% csrf_token %}
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Comment here" aria-label="comment" aria-describedby="button-addon2" name="comment">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
-        </div>
-        </form>
-        </div>
-        <div class="col"></div>
-    </div>
+    </main>
+
 </div>
 
 {% if trip.owner == user %}
