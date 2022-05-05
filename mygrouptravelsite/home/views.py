@@ -4,15 +4,16 @@ from django import views
 from django.db import IntegrityError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-from .models import Going, Trip, Event
+from .models import Going, Trip, Event, Voted, Comment
+from home.forms import TripForm, EventForm, TripJoinForm, CommentForm
 
 from mygrouptravelsite.owner import OwnerListView, OwnerDetailView, OwnerDeleteView
-from home.forms import TripForm, EventForm, TripJoinForm
+
 
 
 # Create your views here.
@@ -37,10 +38,6 @@ class UserTripListView( LoginRequiredMixin ,View):
         trip_list = [ t.trip for t in Going.objects.filter(user=user)]
         ctx = {'trip_list':trip_list }
         return render(request, self.template_name, ctx)
-
-
-
-
 
 
 class TripCreateView(LoginRequiredMixin, View):
@@ -72,16 +69,35 @@ class TripDetailView(OwnerDetailView):
     def get(self, request, pk):
         t = Trip.objects.get(id=pk)
         events = Event.objects.filter(trip=t)
-        event_dict = dict()
-        members = Going.objects.filter(trip=t)
         user = self.request.user
+        comments = Comment.objects.filter(trip=t).order_by('-created_at')[:5]
 
+        print('comment length is..',len(comments))
+
+
+        comment_form = CommentForm()
+
+        members = Going.objects.filter(trip=t)
+        ismember = t.ismember(user.id)
+
+        conf_events_dict = dict()
+        unconf_events_dict = dict()
         for ct, event in enumerate(events):
             key = 'event'+str(ct)
-            event_dict[key] = event
+            if event.confirmed:
+                conf_events_dict[key]= event
+            else:
+                unconf_events_dict[key] = event
         
-        ismember = t.ismember(user.id)
-        ctx = {'trip': t, 'events':event_dict, 'members': members, 'ismember': ismember}
+        ctx = {'trip': t, 
+                'unconf_events':unconf_events_dict, 
+                'conf_events':conf_events_dict , 
+                'members': members, 
+                'ismember': ismember, 
+                'comments': comments,
+                'form':comment_form
+                }
+    
         return render(request, self.template_name, ctx)
 
 class TripDeleteView(OwnerDeleteView):
@@ -151,6 +167,12 @@ class TripJoin(LoginRequiredMixin, View):
             ctx = {'trip': trip, 'form': form, 'error_message': 'Key error, make sure you typed the key correctly'}
             return render(request, self.template_name, ctx )
 
+class CommentCreateView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        trip = get_object_or_404(Trip, id=pk)
+        comment = Comment(text=request.POST['comment'], owner=request.user, trip=trip)
+        comment.save()
+        return redirect(reverse('home:trip_detail', args=[pk]))
 
         
     
@@ -189,6 +211,20 @@ class EventCreateView(LoginRequiredMixin, View):
         event.save()
         return redirect(success_url)
 
+class EventDetailView(LoginRequiredMixin, View):
+    template_name = "home/event_detail.html"
+
+    def get(self, request, pk, pk_event):
+        e = Event.objects.get(id=pk_event)
+        members = e.trip.members.all()
+        user = self.request.user
+        voted = e.has_voted(user.id)
+        print(" the user has voted: ", voted)
+        
+        ctx = {'event': e, 'members': members, 'voted':voted}
+        return render(request, self.template_name, ctx)
+
+
 class EventUpdateView(LoginRequiredMixin, View):
     model = Event
     template_name = 'home/trip_form.html'
@@ -216,6 +252,21 @@ class EventUpdateView(LoginRequiredMixin, View):
         
         form = form.save()
         return redirect(success_url)
+
+def Vote(request, pk, pk_event):
+    event = get_object_or_404(Event, pk=pk_event)
+    print(event)
+    event.votes += 1
+    event.save()
+
+    voter = Voted(event=event, user=request.user)
+    voter.save()
+    return redirect(reverse('home:trip_detail', args=[pk]))
+
+
+
+
+
 
     
 

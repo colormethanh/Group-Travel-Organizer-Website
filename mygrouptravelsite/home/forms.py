@@ -1,5 +1,5 @@
 from django import forms
-from home.models import Trip, Event
+from home.models import Trip, Event, Comment
 
 class TripForm(forms.ModelForm):
     
@@ -48,3 +48,10 @@ class TripJoinForm(forms.Form):
     trip_key = forms.CharField(max_length=10,
                                 help_text='Enter Trip Key to join'
                                 ) 
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields='__all__'
+        exclude=['owner', 'trip', 'created_at']
