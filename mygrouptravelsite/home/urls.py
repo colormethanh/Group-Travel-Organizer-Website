@@ -1,5 +1,7 @@
 from nturl2path import url2pathname
 from django.urls import URLPattern, path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 app_name = 'home'
@@ -18,4 +20,7 @@ urlpatterns = [
     path('trips/<int:pk>/join/', views.TripJoin.as_view(), name='trip_join'),
     path('trips/<int:pk>/<int:pk_event>/vote/', views.Vote, name='vote'),
     path('trips/<int:pk>/comment/', views.CommentCreateView.as_view(), name='comment_create_view'),
-]
+    path('trips/comment/<int:pk_comment>/like', views.AddLikeView.as_view(), name='comment_like'),
+    path('trips/comment/<int:pk_comment>/unlike', views.DeleteLikeView.as_view(), name='comment_unlike'),
+    path('trips/<int:pk>/upload_photo', views.PhotoView.as_view(), name='photo_upload'),
+] 
