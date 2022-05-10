@@ -1,17 +1,42 @@
 {% extends "base_bootstrap.html" %}
 
 {% block content %}
-<h3> {{ title }} </h3>
-<form action="" method="post">
-{% csrf_token %}
+<div class="text-center">
+<div class="container">
+<div class="row align-items-center">
+<div class="col">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">{{title}}</h1>
+            <p class="lead"> 
+                Fill out this form below to continue!
+            </p>
+        </main>
+        </div>
+</div>
+</div>
+</div>
+</div>
+<form action="{{ form_action }}" method="post">
+    {% csrf_token %}
 
-{% if error_message %}
-<p class= "text-danger">*{{ error_message }}</p>
-{% endif %}
+    {% if error_message %}
+    <p class= "text-danger">*{{ error_message }}</p>
+    {% endif %}
 
-{{ form.as_p }}
-<input type="submit" class="btn btn-primary" value="Submit">
-<a href="{% url 'home:trip_list' %}" class="btn btn-secondary">Cancel</a>
+        {% for input in form %}
+        <label for="{{ input.id }}" class="form-label mt-4"> {{ input.label }}: </label>
+        {{ input }}
+        {% endfor %}
+    
+
+    <p></p>
+    <p></p>
+
+    
+    <input type="submit" class="btn btn-primary" value="Submit">
+    <a href="{% url 'home:home_page' %}" class="btn btn-secondary">Cancel</a>
+    
 </form>
 
 {% if events %}

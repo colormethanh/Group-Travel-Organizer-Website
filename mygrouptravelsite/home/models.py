@@ -38,7 +38,6 @@ class Trip(models.Model):
             return False
 
     
-
 class Event(models.Model):
     name = models.CharField(max_length=200, 
                             validators=[MinLengthValidator(3, "Event title must be longer than 3 characters")]
@@ -63,6 +62,7 @@ class Event(models.Model):
         else:
             return False
 
+
 class Going(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -70,12 +70,24 @@ class Going(models.Model):
     def __str__(self):
         return '%s is a member of %s'%(self.user.username, self.trip.name)
 
+class Photos(models.Model):
+    image = models.ImageField(upload_to='photos/')
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name="trip_photos",null=True, blank=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_photos", null=True, blank=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'trip_photo_{self.id}'
+
+
 class Voted(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s voted on %s'%(self.user.username, self.trip.name)
+
 
 class Comment(models.Model):
     text = models.CharField(max_length=200,
@@ -85,7 +97,16 @@ class Comment(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    likers = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like', related_name='comment_liked')
 
     def __str__(self):
         return self.text
+
+class Like(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} likes {self.comment}"
+
 

@@ -2,9 +2,14 @@
 
 {% block content %}
 {% load static %}
-<div id="intro" class="p-5 text-center bg-light">
+<div id="intro" class="p-5 text-center">
+    {% if usertrips %}
     <h1 class="mb-3 h2">Your Trips</h1>
     <p class="mb-3">Below is a list of trips that you are currently the member of. The top one is your most upcoming trip.</p>
+    {% else %}
+    <h1 class="mb-3 h2">Trips</h1>
+    <p class="mb-3">Below is a list of all trips</p>
+    {% endif %}
     <a class="btn btn-primary m-2" href="{% url 'home:trip_list' %}">View all trips</a>
     <a class="btn btn-primary m-2" href="{% url 'home:trip_create' %}">Create a new trip</a>
 </div>
