@@ -1,5 +1,6 @@
 from asyncio import events
 from dataclasses import fields
+from re import template
 from django import views
 from django.db import IntegrityError
 from django.shortcuts import redirect, render, get_object_or_404
@@ -189,6 +190,16 @@ class TripJoin(LoginRequiredMixin, View):
             ctx = {'trip': trip, 'form': form, 'error_message': 'Key error, make sure you typed the key correctly'}
             return render(request, self.template_name, ctx )
 
+class TripMemberView(LoginRequiredMixin, View):
+    template_name = 'home/member_list.html'
+    def get(self, request, pk):
+        user = self.request.user
+        trip = get_object_or_404(Trip, id=pk)
+        member_list = Going.objects.filter(trip=trip)
+        ctx = {'member_list':member_list, 'trip':trip }
+        return render(request, self.template_name, ctx)
+
+
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk):
         trip = get_object_or_404(Trip, id=pk)
@@ -255,6 +266,19 @@ class EventCreateView(LoginRequiredMixin, View):
         event.trip = trip
         event.save()
         return redirect(success_url)
+
+
+class EventListView( LoginRequiredMixin ,View):
+    model = Event
+    template_name = "home/event_list.html"
+
+    def get(self, request, pk):
+        user = self.request.user
+        trip = get_object_or_404(Trip, id=pk)
+        event_list = Event.objects.filter(trip=trip, confirmed=False)
+        ctx = {'event_list':event_list, 'trip':trip}
+        return render(request, self.template_name, ctx)
+
 
 class EventDetailView(LoginRequiredMixin, View):
     template_name = "home/event_detail.html"

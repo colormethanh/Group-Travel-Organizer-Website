@@ -26,10 +26,10 @@
                     <a href="{% url 'home:event_create' trip.id %}" class="btn btn-primary">Submit an Event idea</a>
                 </div> 
                 <div class="col-3">
-                    <a href="#" class="btn btn-primary"> Vote on submitted Events </a>
+                    <a href="{% url 'home:event_list' trip.id %}" class="btn btn-primary"> Vote on submitted Events </a>
                 </div> 
                 <div class="col-3">
-                    <a href="#" class="btn btn-primary"> View trip member</a>
+                    <a href="{% url 'home:trip_members' trip.id %}" class="btn btn-primary"> View trip member</a>
                 </div>
             </div>
         </div>
@@ -191,56 +191,63 @@
                 {% endif %}
             </div>
         </div>
+
     </main>
 </div>
 
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide-to="0"
-        class="active"
-        aria-current="true"
-        aria-label="Slide 1"
-      ></button>
-      <button
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide-to="1"
-        aria-label="Slide 2"
-      ></button>
-      <button
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide-to="2"
-        aria-label="Slide 3"
-      ></button>
-    </div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+            <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+            ></button>
+            <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+            ></button>
+            <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="2"
+                aria-label="Slide 3"
+            ></button>
+            </div>
 
-    <div class="carousel-inner">
-        {% for pic in carousel_pics %}
+            <div class="carousel-inner" style="max-width: 600px">
+                {% for pic in carousel_pics %}
 
-        {% if forloop.first %}
-        <div class="carousel-item active">
-            <img src="{{pic.image.url}}" class="d-block w-100" alt="{{ pic.image }}"/>
+                {% if forloop.first %}
+                <div class="carousel-item active">
+                    <img src="{{pic.image.url}}" class="img-rounded d-block w-100 h-50" alt="{{ pic.image }}"/>
+                </div>
+                {% else %}
+                <div class="carousel-item">
+                    <img src="{{pic.image.url}}" class="img-rounded d-block w-100 h-50" alt="{{ pic.image }}"/>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
-        {% else %}
-        <div class="carousel-item">
-            <img src="{{pic.image.url}}" class="d-block w-100" alt="{{ pic.image }}"/>
         </div>
-        {% endif %}
-        {% endfor %}
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
     </div>
-
+</div>
 
 
 {% if trip.owner == user %}
