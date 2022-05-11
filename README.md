@@ -16,3 +16,6 @@ As a person who loves to travel, especially with friends, I've noticed that as t
 - Voted (through for many to many b/w Event and User)
 - Comment (many to one)
 - Like (many to one)
+
+## Others 
+- Bootstrap template: [bootswatch minty](https://bootswatch.com/minty/).
