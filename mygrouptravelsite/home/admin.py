@@ -1,9 +1,9 @@
 from xml.etree.ElementTree import Comment
 from django.contrib import admin
-from .models import Trip, Event, Going, Comment, Like, Photos
+from .models import Group, Event, Going, Comment, Like, Photos
 # Register your models here.
 
-admin.site.register(Trip)
+admin.site.register(Group)
 admin.site.register(Event)
 admin.site.register(Going)
 admin.site.register(Comment)

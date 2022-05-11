@@ -3,11 +3,11 @@
 {% block content %}
 {% load static %}
 <div id="intro" class="p-5 text-center">
-    <h1 class="mb-3 h2">Member of {{ trip }}</h1>
-    <p class="mb-3">Below is a list of all members of your trip</p>
+    <h1 class="mb-3 h2">Member of {{ group }}</h1>
+    <p class="mb-3">Below is a list of all members of your group</p>
 
-    <a class="btn btn-primary m-2" href="{% url 'home:trip_list' %}">View all trips</a>
-    <a class="btn btn-primary m-2" href="{% url 'home:trip_create' %}">Create a new trip</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:group_list' %}">View all groupss</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:group_create' %}">Create a new group</a>
 </div>
 <p></p>
 <p></p>
@@ -35,6 +35,6 @@
     </div>
 </div>
 {% else %}
-<p> There are currently no member of you trip</p>
+<p> There are currently no member in your group</p>
 {% endif %}
 {% endblock %}

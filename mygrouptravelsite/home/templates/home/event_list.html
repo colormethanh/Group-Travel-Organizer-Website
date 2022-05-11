@@ -3,11 +3,11 @@
 {% block content %}
 {% load static %}
 <div id="intro" class="p-5 text-center">
-    <h1 class="mb-3 h2">Events for {{ trip }}</h1>
-    <p class="mb-3">Below is a list of all events for your trips that you can vote on</p>
+    <h1 class="mb-3 h2">Events for {{ group }}</h1>
+    <p class="mb-3">Below is a list of all events for your group that you can vote on</p>
 
-    <a class="btn btn-primary m-2" href="{% url 'home:trip_list' %}">View all trips</a>
-    <a class="btn btn-primary m-2" href="{% url 'home:trip_create' %}">Create a new trip</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:group_list' %}">View all groups</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:group_create' %}">Create a new groups</a>
 </div>
 <p></p>
 <p></p>
@@ -22,8 +22,8 @@
                 <div class="col p-4 d-flex flex-column position-static">
                 <h3 class="mb-0 text-primary">{{event}}</h3>
                 <div class="mb-1 text-muted">{{event.start_date}} - {{event.end_date}}</div>
-                <p class="card-text mb-auto">Description for a trip</p>
-                <a href="{% url 'home:event_detail' pk=trip.id pk_event=event.id %}" class="stretched-link">View Trip</a>
+                <p class="card-text mb-auto">{{ event.description }}</p>
+                <a href="{% url 'home:event_detail' pk=group.id pk_event=event.id %}" class="stretched-link">View Groups</a>
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
@@ -35,6 +35,6 @@
     </div>
 </div>
 {% else %}
-<p> There are currently no Events for you trip</p>
+<p> There are currently no Events for you groups</p>
 {% endif %}
 {% endblock %}
