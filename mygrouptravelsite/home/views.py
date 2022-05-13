@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import DeleteView
 
 
 from .models import Going, Group, Event, Voted, Comment, Like, Photos
@@ -193,7 +194,6 @@ class GroupJoin(LoginRequiredMixin, View):
 class GroupMemberView(LoginRequiredMixin, View):
     template_name = 'home/member_list.html'
     def get(self, request, pk):
-        user = self.request.user
         group = get_object_or_404(Group, id=pk)
         member_list = Going.objects.filter(group=group)
         ctx = {'member_list':member_list, 'group':group }
@@ -255,10 +255,13 @@ class EventCreateView(LoginRequiredMixin, View):
 
 
         if not form.is_valid():
+            errors = form.non_field_errors
+            print(errors)
             ctx = {'form':form, 
                     'group':group,
                     'title': 'Event Creation',
                     'form_action': form_action,
+                    'errors': errors,
                     }
             return render(request, self.template_name, ctx)
 
@@ -288,11 +291,14 @@ class EventDetailView(LoginRequiredMixin, View):
         members = e.group.members.all()
         user = self.request.user
         voted = e.has_voted(user.id)
-        print(" the user has voted: ", voted)
-        
+        e.get_dates_range(e.start_date, e.end_date)
         ctx = {'event': e, 'members': members, 'voted':voted}
         return render(request, self.template_name, ctx)
 
+class EventDeleteView(DeleteView):
+    model = Event
+    template_name = 'home/group_confirm_delete.html'
+    success_url = reverse_lazy('home:home_page')
 
 class EventUpdateView(LoginRequiredMixin, View):
     model = Event
@@ -330,6 +336,9 @@ def Vote(request, pk, pk_event):
 
     voter = Voted(event=event, user=request.user)
     voter.save()
+
+    confirmed = event.chk_confirmed()
+
     return redirect(reverse('home:group_detail', args=[pk]))
 
 from django.views.decorators.csrf import csrf_exempt

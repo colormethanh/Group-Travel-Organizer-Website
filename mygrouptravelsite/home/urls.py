@@ -19,6 +19,7 @@ urlpatterns = [
     path('groups/<int:pk>/event_list', views.EventListView.as_view(), name='event_list'),
     path('groups/<int:pk>/<int:pk_event>/', views.EventDetailView.as_view(), name='event_detail'),
     path('groups/<int:pk>/<int:pk_event>/update/', views.EventUpdateView.as_view(), name='event_update'),
+    path('groups/<int:pk>/delete', views.EventDeleteView.as_view(), name='event_delete'),
     path('groups/<int:pk>/join/', views.GroupJoin.as_view(), name='group_join'),
     path('groups/<int:pk>/<int:pk_event>/vote/', views.Vote, name='vote'),
     path('groups/<int:pk>/comment/', views.CommentCreateView.as_view(), name='comment_create_view'),

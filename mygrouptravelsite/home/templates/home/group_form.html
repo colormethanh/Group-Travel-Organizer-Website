@@ -17,6 +17,15 @@
 </div>
 </div>
 </div>
+
+{% if errors %}
+<div class="alert alert-dismissable alert-warning">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <h4 class="alert-heading">Warning</h4>
+    <p>{{ errors }}</p>
+</div>
+{% endif %}
+
 <form action="{{ form_action }}" method="post">
     {% csrf_token %}
 
@@ -46,7 +55,7 @@
 <ul>
     {% for event in events %}
     <li> 
-        {{event}} | <a href="{% url 'home:event_update' group.id event.id %}"> Edit </a> 
+        {{event}} | <a href="{% url 'home:event_update' group.id event.id %}"> Edit </a> | <a href="{% url 'home:event_delete' event.id %}"> Delete </a>
     </li>
     {% endfor %}
 </ul>

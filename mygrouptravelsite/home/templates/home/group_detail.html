@@ -41,7 +41,6 @@
                 </h4>
 
                 <div class="accordion" id="EventAccordian">
-
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details_1" aria-expanded="false" aria-controls="details_1">
@@ -60,6 +59,23 @@
                                 <p> There are currently no members in your group </p>
                                 {% endif %}
                             </div>
+                        </div>
+
+                        {% if group.owner == user %}
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details_2" aria-expanded="false" aria-controls="details_2">
+                                Group Modifications
+                            </button>   
+                        </h2>
+                        <div id=details_2 class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#EventAccordian">
+                        <div class="accordian-body">
+                            <br>
+                            <ul>
+                               <li><p><a href="{% url 'home:group_delete' group.id %}"> Delete this Group </a></p></li> 
+                                <li><p><a href="{% url 'home:group_update' group.id %}"> Edit this Group </a></p></li>
+                            </ul>
+                        </div>
+                        {% endif %}
                         </div>
                     </div>
                 </div>
@@ -248,15 +264,7 @@
 </div>
 
 
-{% if group.owner == user %}
-<p></p>
-<p></p>
-<a href="{% url 'home:group_delete' group.id %}"> Delete this Group </a><br>
-<a href="{% url 'home:group_update' group.id %}"> Edit this Group </a><br>
-{% if not ismember %}
-<a href="{% url 'home:group_join' group.id %}"> Join this group </a><br>
-{% endif %}
-{% endif %}
+
 
 
 {% endblock %}

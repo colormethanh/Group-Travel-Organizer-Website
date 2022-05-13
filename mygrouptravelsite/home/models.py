@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from django.db import models
 from django.core.validators import MinLengthValidator
 from django.conf import settings
@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from django import forms
 import datetime
 from django.core.exceptions import ValidationError
+
 
 def date_validator(value):
     if value < datetime.date.today():
@@ -26,8 +27,6 @@ class Group(models.Model):
     description = models.TextField(max_length=200,
                             default="A cool group for a cool 'group' of people :)"
                             ) 
-    # start_date = models.DateField(validators=[date_validator])
-    # end_date = models.DateField(validators=[date_validator])
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Going', related_name='members_going')
 
@@ -68,6 +67,20 @@ class Event(models.Model):
             return True
         else:
             return False
+    def chk_confirmed(self):
+        print('checking if Event has been confirmed')
+        print (self.group.members.all())
+        if self.votes >= len(self.group.members.all()):
+            self.confirmed = True
+            self.save()
+        else:
+            return False
+    def get_dates_range(self, start_date, end_date):
+        delta = end_date - start_date
+        days = [ start_date + timedelta(days=d) for d in range(delta.days +1)]
+        print(days)
+        return days
+
 
 
 class Going(models.Model):
