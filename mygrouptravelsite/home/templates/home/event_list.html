@@ -1,0 +1,42 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+{% load static %}
+<div id="intro" class="p-5 text-center">
+    <h1 class="mb-3 h2">Events for {{ group }}</h1>
+    <p class="mb-3">Below is a list of all events for your group that you can vote on</p>
+
+    <a class="btn btn-primary m-2" href="{% url 'home:group_detail' group.id %}">Back to group homepage</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:event_create' group.id %}">Submit a new event</a>
+</div>
+<p></p>
+<p></p>
+
+{% if event_list %}
+
+<div class="container">
+    {% for event in event_list %}
+    <div class="row mb-2">
+        <div class="col-md-14">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+            <h3 class="mb-0 text-primary">{{event}}</h3>
+            <div class="mb-1 text-muted">{{event.start_date}} - {{event.end_date}}</div>
+            <p class="card-text mb-auto">{{ event.description }}</p>
+            <a href="{% url 'home:event_detail' pk=group.id pk_event=event.id %}" class="stretched-link">View Event</a>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
+            </div>
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<div class="container text-center">
+<p> There are currently no Events for you to vote on. Why not submit your own!</p>
+</div>
+{% endif %}
+{% endblock %}

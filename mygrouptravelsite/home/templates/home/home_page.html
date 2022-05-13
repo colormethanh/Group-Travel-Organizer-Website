@@ -11,9 +11,9 @@
 <main role="main" class="inner cover">
     <h1 class="cover-heading">Welcome to TravelBuddy</h1>
     <p class="lead"> 
-        Travel Buddy is a one stop site for planning, organizing, and sharing trips with your friends, families, or whoever!
+        Travel Buddy is a one stop site for planning, organizing, and sharing events with your friends, families, or whoever!
         <p class="lead">
-            <a href="{% url 'home:trip_create' %}" class="btn btn-lg btn-primary">Click here to create a trip!</a>
+            <a href="{% url 'home:group_create' %}" class="btn btn-lg btn-primary">Click here to create a Group!</a>
           </p>
     </p>
 </main>
@@ -34,10 +34,10 @@
             <div id=how_to_accordion class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#EventAccordian">
                 <div class="accordion-body">
                     <ol>
-                    <li>Create a trip</li>
-                    <li>Invite your group members to the trip by sharing the trip url</li>  
-                    <li>Create events, vote on events, and send updates via the chat function</li>
-                    <li>And when the day finally comes, go and enjoy your trip! (travel buddy will be here for any trip updates that may arise)</li> 
+                    <li>Create a group</li>
+                    <li>Invite your buddies to the group by sharing the group url</li>  
+                    <li>Create events, vote on events, and send messages via the chat function</li>
+                    <li>Lastly, don't forget to post pictures! </li> 
                     </ul>
                 </div>
             </div>
@@ -51,7 +51,7 @@
     <div class="row justify-content-center">
     <div class="col-lg-4">
         <img class="rounded-circle" alt="100x100" src="{% static 'icons/forest.png' %}" data-holder-rendered="true">
-        <h3>Example Hiking Trip</h3>
+        <h3>Example Hiking group</h3>
         <p>Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
         <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
     </div>
@@ -59,7 +59,7 @@
     <div class="col-lg-4">
         <img class="rounded-circle" alt="100x100" src="{% static 'icons/mountain.png' %}" data-holder-rendered="true">
 
-        <h3>Example Moutain Trip</h3>
+        <h3>Example Moutain group</h3>
         <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
         <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
     </div>
@@ -67,7 +67,7 @@
     <div class="col-lg-4">
         <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
 
-        <h3>Example Beach Trip</h3>
+        <h3>Example Beach group</h3>
         <p>And lastly this, the third column of representative placeholder content.</p>
         <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
     </div>

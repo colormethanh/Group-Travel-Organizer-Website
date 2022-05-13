@@ -1,0 +1,38 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+{% load static %}
+<div id="intro" class="p-5 text-center">
+    {% if usergroups %}
+    <h1 class="mb-3 h2">Your groups</h1>
+    <p class="mb-3">Below is a list of groups that you are currently the member of.</p>
+    {% else %}
+    <h1 class="mb-3 h2">Groups</h1>
+    <p class="mb-3">Below is a list of all groups</p>
+    {% endif %}
+    <a class="btn btn-primary m-2" href="{% url 'home:group_list' %}">View all groups</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:group_create' %}">Create a new group</a>
+</div>
+<p></p>
+<p></p>
+<div class="container">
+    <div class="container">
+        {% for group in group_list %}
+        <div class="row mb-2">
+            <div class="col-md-14">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0 text-primary">{{group}}</h3>
+                <p class="card-text mb-auto">{{ group.description }}</p>
+                <a href="{% url 'home:group_detail' group.id %}" class="stretched-link">View Group</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

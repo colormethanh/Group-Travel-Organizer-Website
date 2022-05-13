@@ -1,0 +1,40 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+{% load static %}
+<div id="intro" class="p-5 text-center">
+    <h1 class="mb-3 h2">Member of {{ group }}</h1>
+    <p class="mb-3">Below is a list of all members of your group</p>
+
+    <a class="btn btn-primary m-2" href="{% url 'home:group_list' %}">View all groupss</a>
+    <a class="btn btn-primary m-2" href="{% url 'home:group_create' %}">Create a new group</a>
+</div>
+<p></p>
+<p></p>
+
+{% if member_list %}
+<div class="container">
+    <div class="container">
+        {% for member in member_list %}
+        <div class="row mb-2">
+            <div class="col-md-14">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0 text-primary">{{ member }}</h3>
+                <div class="mb-1 text-muted">Some member information</div>
+                <p class="card-text mb-auto">MORE member information</p>
+                <a href="#" class="stretched-link">View member</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<p> There are currently no member in your group</p>
+{% endif %}
+{% endblock %}

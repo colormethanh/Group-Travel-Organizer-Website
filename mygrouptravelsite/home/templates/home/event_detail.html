@@ -5,6 +5,7 @@
     <h1>{{ event.name }}</h1> 
     <p></p>
     <ul>
+    <li> Description: {{event.description}} </li>
     <li> Event Location: {{ event.location }} </li>
     <li> Event Cost: {{ event.cost }} </li>
     <li> Start date: {{ event.start_date }} </li>
@@ -15,7 +16,7 @@
 </div>
 
 {% if not voted %}
-<form action="{% url 'home:vote' event.trip.id event.id %}" method="post">
+<form action="{% url 'home:vote' event.group.id event.id %}" method="post">
     {% csrf_token %}
     <input type="submit" class="btn btn-primary" value = "Vote"/>
 </form>
