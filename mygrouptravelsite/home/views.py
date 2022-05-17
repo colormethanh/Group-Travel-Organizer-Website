@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import DeleteView
-
+from django.templatetags.static import static
 
 from .models import Going, Group, Event, Voted, Comment, Like, Photos
 from home.forms import GroupForm, EventForm, GroupJoinForm, CommentForm, PhotoForm
@@ -39,6 +39,7 @@ class UserGroupListView( LoginRequiredMixin ,View):
     def get(self, request):
         user = self.request.user
         group_list = [ t.group for t in Going.objects.filter(user=user)]
+
         ctx = {'group_list':group_list, 'usergroups':True }
         return render(request, self.template_name, ctx)
 
@@ -72,7 +73,11 @@ class GroupCreateView(LoginRequiredMixin, View):
             return render(request, self.template_name, ctx)
         group = form.save(commit=False)
         group.owner = self.request.user
+        group.icon = static('icons/'+str(group.icon))
         group.save()
+
+        going = Going(group=group, user=self.request.user)
+        going.save()
 
         pk = group.id
         success_url = reverse_lazy('home:group_detail', kwargs={'pk':pk})
@@ -87,7 +92,7 @@ class GroupDetailView(OwnerDetailView):
         user = self.request.user
         comments = Comment.objects.filter(group=t).order_by('-created_at')
         carousel_pics = Photos.objects.filter(group=t).order_by('-created_at')
-        
+
         comment_form = CommentForm()
         photo_form = PhotoForm()
 
@@ -108,6 +113,7 @@ class GroupDetailView(OwnerDetailView):
         if user.is_authenticated:
             rows = request.user.comment_liked.values('id')
             liked_comments = [row['id'] for row in rows]
+
 
         
         ctx = {'group': t, 

@@ -5,6 +5,7 @@ from django import forms
 from home.models import Group, Event, Comment, Photos
 
 
+
 class GroupForm(forms.ModelForm):
     
     class Meta:
@@ -30,6 +31,7 @@ class GroupForm(forms.ModelForm):
                     'placeholder': 'Every group needs a desciption right? :D',
                     'id': 'description',
             }),
+            'icon': forms.RadioSelect(),
         }
 
 class EventForm(forms.ModelForm):
@@ -98,8 +100,6 @@ class EventForm(forms.ModelForm):
                     raise forms.ValidationError("Submitted dates conflict with other trip's dates", code='conflicitng_dates')
         return cd
                 
-        
-
 
 class GroupJoinForm(forms.Form):
     group_key = forms.CharField(widget=forms.TextInput(
