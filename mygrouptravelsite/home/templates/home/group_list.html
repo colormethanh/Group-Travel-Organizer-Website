@@ -27,7 +27,7 @@
                 <a href="{% url 'home:group_detail' group.id %}" class="stretched-link">View Group</a>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <img class="rounded-circle" alt="100x100" src="{% static 'icons/vacations.png' %}" data-holder-rendered="true">
+                    <img class="rounded-circle" alt="100x100" src={{group.icon}} data-holder-rendered="true">
                 </div>
             </div>
             </div>

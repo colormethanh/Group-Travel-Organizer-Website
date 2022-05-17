@@ -16,6 +16,18 @@ def date_validator(value):
 
 
 class Group(models.Model):
+    ICON_CHOICES = [
+        ('buildings.png','Buildings'),
+        ('europe.png','Europe'),
+        ('forest.png','Forest'),
+        ('grand-canyon.png', 'Grand Canyon'),
+        ('japan.png','Japan'),
+        ('mountain.png','Moutains'),
+        ('united-states.png','USA'),
+        ('vacations.png','Beach'),
+    ]
+
+
     name = models.CharField(max_length=200, 
                             validators=[MinLengthValidator(3, "Group title must be longer than 3 characters")]
                             )
@@ -26,7 +38,8 @@ class Group(models.Model):
                             )
     description = models.TextField(max_length=200,
                             default="A cool group for a cool 'group' of people :)"
-                            ) 
+                            )
+    icon = models.CharField(choices=ICON_CHOICES, max_length=128, null=True, blank=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Going', related_name='members_going')
 
