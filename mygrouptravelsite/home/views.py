@@ -160,7 +160,9 @@ class GroupUpdateView(LoginRequiredMixin, View):
             ctx = {'form':form}
             return render(request, self.template_name, ctx)
         
-        form = form.save()
+        group = form.save(commit=False)
+        group.icon = static('icons/'+str(group.icon))
+        group.save()
         return redirect(success_url)
 
 class GroupJoin(LoginRequiredMixin, View):
