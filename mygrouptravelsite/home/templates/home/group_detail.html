@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        {% if group.owner == user %}
+                        
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details_2" aria-expanded="false" aria-controls="details_2">
                                 Group Modifications
@@ -71,11 +71,15 @@
                         <div class="accordian-body">
                             <br>
                             <ul>
-                               <li><p><a href="{% url 'home:group_delete' group.id %}"> Delete this Group </a></p></li> 
+                                {% if group.owner == user %}
+                                <li><p><a href="{% url 'home:group_delete' group.id %}"> Delete this Group </a></p></li> 
                                 <li><p><a href="{% url 'home:group_update' group.id %}"> Edit this Group </a></p></li>
+                                {% else %}
+                                <li> <p> Group Modifications limited to group owners </p> </li>
+                                {% endif %}
                             </ul>
                         </div>
-                        {% endif %}
+                        
                         </div>
                     </div>
                 </div>
@@ -96,7 +100,6 @@
                             <input type="text" class="form-control" placeholder="Join group to comment" aria-label="comment" aria-describedby="button-addon2" name="comment">
                             <button class="btn btn-outline-secondary disabled" type="submit" id="button-addon2">Submit</button>
                             {% endif %}
-
                         </div> 
                     </form>
                     </div>
