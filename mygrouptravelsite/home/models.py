@@ -62,7 +62,7 @@ class Event(models.Model):
                             default='A cool event for a cool group of people :)'
                             )
     location= models.CharField(max_length=200, null=True)
-    cost= models.DecimalField( max_digits=4 , decimal_places=2, default = 0)
+    cost= models.DecimalField(max_digits=7, decimal_places=2)
     start_date = models.DateField(validators=[date_validator], null=True)
     end_date = models.DateField(validators=[date_validator], null=True)
     confirmed = models.BooleanField(default=False)
