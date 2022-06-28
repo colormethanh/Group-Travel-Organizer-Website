@@ -244,9 +244,6 @@ class EventCreateView(LoginRequiredMixin, View):
         group = get_object_or_404(Group, id=pk)
         form_action = reverse_lazy('home:event_create', kwargs={'pk':group.id})
         
-
-        
-        
         ctx = {'form': form, 
             'group':group,
             'title': 'Event Creation',
@@ -272,6 +269,7 @@ class EventCreateView(LoginRequiredMixin, View):
                     'errors': errors,
                     }
             return render(request, self.template_name, ctx)
+
 
         event = form.save(commit=False)
         event.group = group
