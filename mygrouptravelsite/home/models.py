@@ -112,6 +112,9 @@ class Photos(models.Model):
 
     def __str__(self):
         return f'group_photo_{self.id}'
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 
 class Voted(models.Model):
