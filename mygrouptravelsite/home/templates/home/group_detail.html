@@ -239,7 +239,7 @@
             ></button>
             </div>
 
-            <div class="carousel-inner" style="max-width: 600px">
+            <div class="carousel-inner" style="max-width: 800px">
                 {% for pic in carousel_pics %}
 
                 {% if forloop.first %}
@@ -248,7 +248,7 @@
                 </div>
                 {% else %}
                 <div class="carousel-item">
-                    <img src="{{pic.image.url}}" class="img-rounded d-block w-100 h-50" alt="{{ pic.image }}"/>
+                    <img src="{{pic.image.url}}" class="img-rounded d-block w-100 h-50" alt="{{ pic.image }}" height="100px"/>
                 </div>
                 {% endif %}
                 {% endfor %}
@@ -263,6 +263,9 @@
             </div>
         </div>
         </div>
+        
+        
+        
     </div>
 </div>
 

@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +47,7 @@ INSTALLED_APPS = [
     # Created apps
     'home.apps.HomeConfig',
 
-    'storages',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -135,10 +138,9 @@ MEDIA_ROOT = BASE_DIR/'uploads'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
 
-AWS_ACCESS_KEY_ID= os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY= os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME= os.environ.get('AWS_STORAGE_BUCKET_NAME')
-
-AWE_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME':os.environ.get('CLOUD_NAME'),
+    'API_KEY':os.environ.get('API_KEY'),
+    'API_SECRET':os.environ.get('API_SECRET'),
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
