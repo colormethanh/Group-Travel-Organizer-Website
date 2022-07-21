@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from django import forms
 import datetime
 from django.core.exceptions import ValidationError
+from django_resized import ResizedImageField
 
 
 def date_validator(value):
@@ -104,7 +105,8 @@ class Going(models.Model):
         return '%s is a member of %s'%(self.user.username, self.group.name)
 
 class Photos(models.Model):
-    image = models.ImageField(upload_to='photos/')
+    # image = models.ImageField(upload_to='photos/')
+    image = ResizedImageField(size=[800, 600], upload_to='photos/', blank=True, null=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_photos",null=True, blank=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_photos", null=True, blank=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
